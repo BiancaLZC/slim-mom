@@ -2,8 +2,9 @@ import axios from 'axios';
 import { getAuthToken } from '../utils/auth'; 
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3000', 
+  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000',
 });
+
 
 axiosInstance.interceptors.request.use(config => {
   const token = getAuthToken();
