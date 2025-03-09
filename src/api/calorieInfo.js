@@ -2,7 +2,7 @@ import axiosInstance from './axios';
 
 export const getDailyIntake = async params => {
   try {
-    const response = await axiosInstance.get('/products/daily-intake', {
+    const response = await axiosInstance.get('/api/products/daily-intake', {
       params,
     });
     return response.data;
