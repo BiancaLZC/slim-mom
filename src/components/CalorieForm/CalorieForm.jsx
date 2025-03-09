@@ -55,14 +55,17 @@ const CalorieForm = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
+    console.log("Form Data Before Sending:", formData); 
+  console.log("Blood Type:", bloodType); 
     dispatch(startLoading());
     try {
       const params = {
-        weight: formData.currentWeight,
-        height: formData.height,
-        age: formData.age,
-        bloodType: bloodType,
-      };
+      weight: Number(formData.currentWeight),
+      height: Number(formData.height),
+      age: Number(formData.age),
+      bloodType: Number(bloodType),
+};
+       console.log("Params Sent to API:", params);
 
       const data = await getDailyIntake(params);
       setRecCalories(data.dailyKcal);
@@ -76,6 +79,7 @@ const CalorieForm = () => {
         setIsModalOpen(true);
       }
     } catch (err) {
+      console.error("API Error:", err.message);
       console.error(err.message);
     } finally {
       dispatch(stopLoading());
