@@ -26,7 +26,7 @@ const DiaryAddProductForm = ({ onSave, onClose }) => {
       setLoading(true);
       try {
         const response = await axios.get(
-          'http://localhost:3000/api/products/search',
+          'http://localhost:5000/api/products/search',
           {
             params: { query: productName, bloodType },
           }
