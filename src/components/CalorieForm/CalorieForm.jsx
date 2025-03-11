@@ -54,37 +54,55 @@ const CalorieForm = () => {
   };
 
   const handleSubmit = async e => {
-    e.preventDefault();
-    console.log("Form Data Before Sending:", formData); 
-  console.log("Blood Type:", bloodType); 
-    dispatch(startLoading());
-    try {
-      const params = {
+  e.preventDefault();
+  console.log("Form Data Before Sending:", formData);
+  console.log("Blood Type Before Sending:", bloodType);
+
+  // ✅ Verificăm dacă toate câmpurile sunt completate și sunt numere
+  if (
+    !formData.currentWeight || 
+    !formData.height || 
+    !formData.age || 
+    !bloodType ||
+    isNaN(formData.currentWeight) || 
+    isNaN(formData.height) || 
+    isNaN(formData.age) || 
+    isNaN(bloodType)
+  ) {
+    alert("Please enter valid numbers for all fields.");
+    return;
+  }
+
+  dispatch(startLoading());
+
+  try {
+    const params = {
       weight: Number(formData.currentWeight),
       height: Number(formData.height),
       age: Number(formData.age),
       bloodType: Number(bloodType),
-};
-       console.log("Params Sent to API:", params);
+    };
 
-      const data = await getDailyIntake(params);
-      setRecCalories(data.dailyKcal);
-      setForbiddenFoods(data.notRecommendedProducts);
+    console.log("Params Sent to API:", params);
 
-      if (auth.isAuthenticated) {
-        await saveCalorieData(data.dailyKcal, data.notRecommendedProducts);
-        setIsModalOpen(false);
-        navigate('/calculator');
-      } else {
-        setIsModalOpen(true);
-      }
-    } catch (err) {
-      console.error("API Error:", err.message);
-      console.error(err.message);
-    } finally {
-      dispatch(stopLoading());
+    const data = await getDailyIntake(params);
+    setRecCalories(data.dailyKcal);
+    setForbiddenFoods(data.notRecommendedProducts);
+
+    if (auth.isAuthenticated) {
+      await saveCalorieData(data.dailyKcal, data.notRecommendedProducts);
+      setIsModalOpen(false);
+      navigate('/calculator');
+    } else {
+      setIsModalOpen(true);
     }
-  };
+  } catch (err) {
+    console.error("API Error:", err.response ? err.response.data : err.message);
+  } finally {
+    dispatch(stopLoading());
+  }
+};
+
 
   const handleStartLosingWeight = () => {
     setIsModalOpen(false);

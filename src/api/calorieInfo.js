@@ -13,12 +13,20 @@ export const getDailyIntake = async params => {
 
 export const saveCalorieInfo = async calorieInfo => {
   try {
+    const token = localStorage.getItem("token"); 
+    if (!token) throw new Error("No authentication token found");
+    
     const response = await axiosInstance.post(
-      '/save-calorie-info',
-      calorieInfo
+      '/api/save-calorie-info',
+      calorieInfo,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }
     );
     return response.data;
   } catch (error) {
-    throw error.response.data;
+    throw error.response.data || { message: 'Something went wrong'};
   }
 };

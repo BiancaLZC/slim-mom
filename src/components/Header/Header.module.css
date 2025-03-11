@@ -152,7 +152,7 @@
   .userSection {
     position: absolute;
     top: 84px;
-    left: calc(180%);
+    left: calc(80%);
     background-color: transparent;
     padding: 20px;
   }

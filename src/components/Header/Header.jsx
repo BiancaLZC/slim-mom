@@ -23,7 +23,7 @@ const Header = () => {
   const handleLogout = useCallback(async () => {
     try {
       const userName = auth.user ? auth.user.name : 'Unknown user';
-      await axiosInstance.post('/auth/logout');
+      await axiosInstance.post('/api/auth/logout');
       setAuth({ token: null, isAuthenticated: false, user: null });
       console.log(`User ${userName} logged out successfully`);
     } catch (err) {
